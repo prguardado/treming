@@ -1,0 +1,26 @@
+# Ignorar el entorno virtual de Python
+venv19/
+venv/
+.venv/
+
+# Ignorar los archivos de registro (logs)
+*.log
+odoo.log
+
+# Ignorar el núcleo de Odoo (si lo tienes clonado dentro de este mismo directorio)
+odoo/
+odoo-bin
+
+# Ignorar archivos temporales de Python (compilados)
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar configuraciones locales de VS Code u editores
+.vscode/
+.idea/
+
+# Ignorar el archivo de configuración local de Odoo (si aplica)
+*.conf
+odoo.conf

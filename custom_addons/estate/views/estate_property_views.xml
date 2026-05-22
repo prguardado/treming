@@ -1,0 +1,136 @@
+<!-- Estate Property Views -->
+<odoo>
+    <data>
+
+        <!-- Apartado para búsqueda de propiedades -->
+        <record id="estate_property_view_search" model="ir.ui.view">
+            <field name="name">estate.property.search</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <search string="Tests">
+                    <field name="name"/>
+                    <field name="postcode"/>
+                    <field name="expected_price"/>
+                    <field name="bedrooms"/>
+                    <field name="living_area"/>
+                    <field name="facades"/>
+                    <field name="garage"/>
+                    <field name="garden"/>
+                    <separator/>
+                    <filter string="Archivados" name="active" domain="[('active', '=', False)]"/>
+                    <group>
+                        <filter string="Código Postal" name="postcode" context="{'group_by':'postcode'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- 1. Form View (Vista de formulario para crear/editar propiedades) -->
+        <record id="view_estate_property_form" model="ir.ui.view">
+            <field name="name">estate.property.form</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <form string="Properties">
+                    <header>
+                        <button name="action_set_sold_property" type="object"  string="Vendida" invisible="state in ('sold', 'canceled')" class="oe_highlight"/>
+                        <button name="action_set_cancelled_property" type="object" string="Cancelar" invisible="state in ('sold', 'canceled')" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" class="mb16" placeholder="My new house"/>
+                            </h1>
+                        </div>
+                        <field name="tag_ids" placeholder="Tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <p></p>
+                        <group>
+                            <group>
+                                <!--<field name="state"/> // Se deshabilitó por que se añadió un widget para estado en el header -->
+                                <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="postcode"/>
+                                <field name="date_availability" string="Available From"/>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="expected_price"/>
+                                    <field name="best_price"/>
+                                    <field name="selling_price"/>
+                                </group>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Descripción">
+                                <group>
+                                    <group>
+                                        <field name="description" string="Descripción"/>
+                                        <field name="bedrooms"/>
+                                        <field name="living_area"/>
+                                        <field name="facades"/>
+                                        <field name="garage"/>
+                                        <field name="garden"/>
+                                        <field name="garden_area" invisible="not garden"/>
+                                        <field name="garden_orientation" invisible="not garden"/>
+                                        <field name="total_area"/>
+                                        <field name="active"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Ofertas">
+                                <!-- List View (Vista de lista para mostrar las ofertas de propiedades) -->
+                                <field name="offer_ids" readonly="state in ('offer_acepted', 'sold', 'canceled')">
+                                    <list string="Offers" editable="bottom">
+                                        <field name="price" width="25%"/>
+                                        <field name="partner_id" width="25%"/>
+                                        <field name="validity" width="15%"/>
+                                        <field name="date_deadline" width="15%"/>
+                                        <button name="action_accept_offer" type="object" width="5%" invisible="status in ('accepted', 'refused')" icon="fa-check"/>
+                                        <button name="action_refuse_offer" type="object" width="5%" invisible="status in ('accepted', 'refused')" icon="fa-times"/>
+                                        <field name="status" width="15%"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Información Adicional">
+                                <group>
+                                    <field name="salesperson_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- 2. List View (Vista de lista para mostrar todas las propiedades) -->
+        <record id="view_estate_property_list" model="ir.ui.view">
+            <field name="name">estate.property.list</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <list string="Propiedades">
+                    <field name="name" width="25%"/>
+                    <field name="postcode" width="15%"/>
+                    <field name="bedrooms" width="10%"/>
+                    <field name="living_area" width="10%"/>
+                    <field name="expected_price" width="15%"/>
+                    <field name="selling_price" width="15%"/>
+                    <field name="date_availability" width="10%" optional='hide'/>
+                </list>
+            </field>
+        </record>
+        
+         <!-- Acción para abrir la vista de lista de propiedades -->
+        <record id="action_estate_property" model="ir.actions.act_window">
+            <field name="name">Estate Properties</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Estate Property record!
+                </p>
+            </field>
+        </record>
+        
+    </data>
+ </odoo>

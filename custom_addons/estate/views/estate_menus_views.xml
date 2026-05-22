@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menú para abrir la vista de lista de propiedades -->
+        <menuitem id="menu_estate_root" name="Estate Management" sequence="10"/>
+        
+        <!-- Menú para vista de propiedades -->
+        <menuitem id="menu_estate_property" name="Anuncios" parent="menu_estate_root" action="action_estate_property" sequence="10"/>
+        
+        <menuitem id="menu_estate_property_list" name="Propiedades" parent="menu_estate_property" action="action_estate_property" sequence="10" />
+
+        <!-- Menús para vistas de configuraciones para propiedades -->
+        <menuitem id="menu_estate_property_settings" name="Settings" parent="menu_estate_root" action="action_estate_property" sequence="10"/>
+
+        <menuitem id="menu_estate_property_type_list" name="Tipos de Propiedades" parent="menu_estate_property_settings" action="action_estate_property_type" sequence="10"/>
+
+        <menuitem id="menu_estate_property_tag_list" name="Etiquetas" parent="menu_estate_property_settings" action="action_estate_property_tag" sequence="10"/>
+
+</odoo>
