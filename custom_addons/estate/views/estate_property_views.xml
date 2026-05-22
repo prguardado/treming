@@ -80,7 +80,11 @@
                             <page string="Ofertas">
                                 <!-- List View (Vista de lista para mostrar las ofertas de propiedades) -->
                                 <field name="offer_ids" readonly="state in ('offer_acepted', 'sold', 'canceled')">
-                                    <list string="Offers" editable="bottom">
+                                    
+                                    <list string="Offers" editable="bottom"
+                                        decoration-danger="status == 'refused'" 
+                                        decoration-success="status == 'accepted'">
+
                                         <field name="price" width="25%"/>
                                         <field name="partner_id" width="25%"/>
                                         <field name="validity" width="15%"/>
@@ -108,7 +112,12 @@
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Propiedades">
+                
+                <list string="Propiedades" decoration-success="state in ('offer_received', 'offer_accepted')" 
+                        decoration-bf="state == 'offer_accepted'" 
+                        decoration-muted="state == 'sold'"
+                        decoration-danger="state == 'canceled'">
+
                     <field name="name" width="25%"/>
                     <field name="postcode" width="15%"/>
                     <field name="bedrooms" width="10%"/>

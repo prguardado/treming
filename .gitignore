@@ -24,3 +24,4 @@ odoo-bin
 # Ignorar el archivo de configuración local de Odoo (si aplica)
 *.conf
 odoo.conf
+
