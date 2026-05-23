@@ -1,0 +1,127 @@
+<odoo>
+    <record id="view_treming_intern_list" model="ir.ui.view">
+        <name>treming.intern.list</name>
+        <model>treming.intern</model>
+        <arch type="xml">
+            <list string="Pasantes" import="0" default_oder="birth_date desc" decoration-info="referred == True">
+                <field name="name"/>
+                <field name="birth_date"/>
+                <field name="gender"/>
+                <field name="category_ids" widget="many2many_tags"/>
+                <field name="referred"/>
+            </list>
+        </arch>
+    </record>
+
+    <record id="vew_treming_intern_form" model="ir.ui.view">
+        <name>treming.intern.form</name>
+        <model>treming.intern</model>
+        <arch type="xml">
+            <form string="Pasante">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Nombre del Pasante"/>
+                        <h1>
+                            <field name="name" placeholder="Ej. Jorge Pérez"/>
+                        </h1>
+                    </div>
+
+                    <notebook>
+                        <page string="Información General">
+                            <group>
+                                <group>
+                                    <field name="birth_date"/>
+                                    <field name="gender"/>
+                                    <field name="country_id" options="{'no_create': True}"/>
+                                    <field name="email"/>
+                                </group>
+
+                                <group>
+                                    <field name="university_id"/>
+                                    <field name="career"/>
+                                    <field name="category_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit': True}"/>
+                                    <field name="referred"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Pasatiempos">
+                            <field name="hobbies" placeholder="Pasatiempos..."/>
+                        </page>
+
+                        <page string="Actividades">
+                            <field name="activity_ids">
+                                <list editable="bottom">
+                                    <field name="date"/>
+                                    <field name="description"/>
+                                    <field name="difficulty"/>
+                                    <field name="product_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </arch>
+    </record>
+
+    <record id="view_treming_intern_search" model="ir.ui.view">
+        <name>treming.intern.search</name>
+        <model>treming.intern</model>
+        <arch type="xml">
+            <search string="Buscar Pasantes">
+                <field name="name"/>
+                <field name="birth_date"/>
+                <field nme="gender"/>
+                <field name="country_id"/>
+                
+                <filter string="Referidos" name="filter_referred" domain="[('referred', '=', true)]"/>
+                <filter string="País: El Salvador" name="filter_el_salvador" domain="[('country_id.name', 'ilike', 'El Salvador')]"/>
+
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Universidad / Institución" name="group_by_university" context="{'group_by': 'university_id'}"/>
+                </group>
+            </search>
+        </arch>
+    </record>
+
+    <record id="action_treming_intern" model="ir.actions.act_window">
+        <name>Pasantes</name>
+        <res_model>treming.intern</res_model>
+        <view_mode>list,form</view_mode>
+        <search_view_id ref="view_treming_intern_search"/>
+    </record>
+
+    <record id="action_treming_intern_activities" model="ir.actions.act_window">
+        <name>Actividades de Pasante</name>
+        <res_model>treming.intern.activities</res_model>
+        <view_mode>list</view_mode>
+        <search_view_id ref="view_treming_intern_activities_list"/>
+    </record>
+
+    <record id="view_treming_intern_activities_list" model="ir.ui.view">
+        <name>treming.intern.activities.list</name>
+        <model>treming.intern.activities</model>
+        <arch type="xml">
+            <list string="Actividades" create="0" delete="0" edit="0">
+                <field name="intern_id"/>
+                <field name="date"/>
+                <field name="description"/>
+                <field name="difficulty"/>
+                <field name="product_id"/>
+            </list>
+        </arch>
+    </record>
+
+    <menuitem   id="menu_treming_intern" 
+                name="Pasantes"
+                parent="contacts.menu_contacts"
+                action="action_treming_intern"/>
+
+    <menuitem   id="menu_treming_intern_activities" 
+                name="Actividades de Pasantes"
+                parent="contacts.res_partner_menu_config"
+                action="action_treming_intern_activities"
+                sequence="30"/>
+
+</odoo>

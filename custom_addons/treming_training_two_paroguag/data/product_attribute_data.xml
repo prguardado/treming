@@ -1,0 +1,25 @@
+<odoo>
+    <data noupdate="0">
+        <record id="product_attribute_estilo" model="product.attribute">
+            <field name="name">Estilo</field>
+            <field name="display_type">select</field>
+            <field name="create_variant">dynamic</field>
+        </record>
+
+        <record id="product_attribute_value_clasico" model="product.attribute.value">
+            <field name="name">Clasico</field>
+            <field name="attribute_id" ref="product_attribute_estilo"/>
+        </record>
+
+        <record id="product_attribute_value_moderno" model="product.attribute.value">
+            <field name="name">Moderno</field>
+            <field name="attribute_id" ref="product_attribute_estilo"/>
+        </record>
+
+        <record id="product_attribute_value_alternativo" model="product.attribute.value">
+            <field name="name">Alternativo</field>
+            <field name="attribute_id" ref="product_attribute_estilo"/>
+        </record>
+
+    </data>
+</odoo>
