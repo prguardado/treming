@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="view_treming_intern_list" model="ir.ui.view">
         <name>treming.intern.list</name>

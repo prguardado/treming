@@ -12,11 +12,13 @@
                     <field name="postcode"/>
                     <field name="expected_price"/>
                     <field name="bedrooms"/>
-                    <field name="living_area"/>
+                    <!--<field name="living_area"/>-->
                     <field name="facades"/>
                     <field name="garage"/>
                     <field name="garden"/>
+                    <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
                     <separator/>
+                    <filter string="Disponible" name="state" domain="[('state','in',('new','offer_received'))]"/>
                     <filter string="Archivados" name="active" domain="[('active', '=', False)]"/>
                     <group>
                         <filter string="Código Postal" name="postcode" context="{'group_by':'postcode'}"/>
@@ -80,14 +82,17 @@
                             <page string="Ofertas">
                                 <!-- List View (Vista de lista para mostrar las ofertas de propiedades) -->
                                 <field name="offer_ids" readonly="state in ('offer_acepted', 'sold', 'canceled')">
-                                    <list string="Offers" editable="bottom">
+                                    <list string="Offers" editable="bottom"
+                                            decoration-danger="status == 'refused'"
+                                            decoration-success="status == 'accepted'">
                                         <field name="price" width="25%"/>
                                         <field name="partner_id" width="25%"/>
                                         <field name="validity" width="15%"/>
                                         <field name="date_deadline" width="15%"/>
                                         <button name="action_accept_offer" type="object" width="5%" invisible="status in ('accepted', 'refused')" icon="fa-check"/>
                                         <button name="action_refuse_offer" type="object" width="5%" invisible="status in ('accepted', 'refused')" icon="fa-times"/>
-                                        <field name="status" width="15%"/>
+                                        
+                                        <field name="status" width="15%" column_invisible="True"/>
                                     </list>
                                 </field>
                             </page>
@@ -108,9 +113,13 @@
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Propiedades">
+                <list string="Propiedades" 
+                        decoration-success="state in ('offer_received', 'offer_accepted')"
+                        decoration-bf="state =='offer_accepted'"
+                        decoration-muted="state == 'sold'">
                     <field name="name" width="25%"/>
-                    <field name="postcode" width="15%"/>
+                    <field name="property_type_id" width="15%"/>
+                    <field name="postcode" width="10%"/>
                     <field name="bedrooms" width="10%"/>
                     <field name="living_area" width="10%"/>
                     <field name="expected_price" width="15%"/>
@@ -119,18 +128,77 @@
                 </list>
             </field>
         </record>
+
+        <!-- 3. Kanban View (Vista de kanban para mostrar las propiedades -->
+        <record id="view_estate_property_kanban" model="ir.ui.view">
+            <field name="name">estate.property.kanban</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <kanban strong="Propiedades" default_group_by="property_type_id" records_draggable="False">
+                    <field name="state"/>
+                    <field name="expected_price"/>
+                    <field name="selling_price"/>
+                    <field name="tag_ids"/>
+                    
+                    <templates>
+                        <t t-name="card">
+                            <div class="p-3">
+                                <h5 class="card-title fw-bold mb-1">
+                                    <field name="name"/>
+                                </h5>
+
+                                <div class="mb-1">
+                                    Price: 
+                                    <t t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold'">
+                                        <field name="selling_price"/>
+                                    </t>
+                                    <t t-else="">
+                                        <field name="expected_price"/>
+                                    </t>
+                                </div>
+
+                                <div class="mb-1">
+                                    <t t-if="record.state.raw_value == 'new'">
+                                        <span class="badge bg-secondary"><field name="state"/></span>
+                                    </t>
+                                    <t t-elif="record.state.raw_value == 'offer_received'">
+                                        <span class="badge bg-info"><field name="state"/></span>
+                                    </t>
+                                    <t t-elif="record.state.raw_value == 'offer_accepted'">
+                                        <span class="badge bg-warning text-dark"><field name="state"/></span>
+                                    </t>
+                                    <t t-elif="record.state.raw_value == 'sold'">
+                                        <span class="badge bg-success text-white"><field name="state"/></span>
+                                    </t>
+                                    <t t-elif="record.state.raw_value == 'canceled'">
+                                        <span class="badge bg-danger"><field name="state"/></span>
+                                    </t>
+                                </div>
+                                
+                                <div class="mt-2">
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                </div>
+                                
+                            </div>
+                        </t>
+                    </templates>
+
+                </kanban>
+            </field>
+        </record>
         
-         <!-- Acción para abrir la vista de lista de propiedades -->
+        <!-- Acción para abrir las vistas de propiedades -->
         <record id="action_estate_property" model="ir.actions.act_window">
             <field name="name">Estate Properties</field>
             <field name="res_model">estate.property</field>
-            <field name="view_mode">list,form</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="context">{'search_default_state': True}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create your first Estate Property record!
                 </p>
             </field>
         </record>
-        
+
     </data>
  </odoo>

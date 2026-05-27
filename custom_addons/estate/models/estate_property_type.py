@@ -32,4 +32,13 @@ class EstatePropertyType(models.Model):
     # Definición de atributo One2many property_ids
     property_ids = fields.One2many('estate.property', 'property_type_id', string='Propiedades')
     
+    # Ejercicio Capítulo  11 Parte final: Campos relacionales y calculados para offer_ids y offer_count
+    offer_ids = fields.One2many('estate.property.offer', 'property_type_id', string='Ofertas')
+    offer_count = fields.Integer(string='Conteo de ofertas', compute='_compute_offer_count')
     
+    # Método calculado para contar las ofertas
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        for record in self:
+            # len() cuenta cuántos registros hay dentro de offer_ids
+            record.offer_count = len(record.offer_ids)

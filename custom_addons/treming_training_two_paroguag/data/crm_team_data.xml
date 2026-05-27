@@ -2,7 +2,7 @@
 
     <data noupdate="0">
 
-        <record id="sales_team.crm_team_salesteam_0" model="crm.team">
+        <record id="sales_team.team_sales_department" model="crm.team">
             <field name="alias_contact">partners</field>
             <field name="invoiced_target">500000</field>
         </record>
@@ -11,13 +11,13 @@
             <field name="name">Pausa</field>
             <field name="fold" eval="True"/>
             <field name="rotting_threshold_days">10</field>
-            <field name="team_ids" eval="[(4, ref('sales_team.crm_team_salesteam_0'))]"/>
+            <field name="team_ids" eval="[(4, ref('sales_team.team_sales_department'))]"/>
         </record>
 
         <record id="stage_entrevista" model="crm.stage">
             <field name="name">Entrevista</field>
             <field name="color">4</field> 
-            <field name="team_ids" eval="[(4, ref('sales_team.crm_team_salesteam_0'))]"/>
+            <field name="team_ids" eval="[(4, ref('sales_team.team_sales_department'))]"/>
         </record>
 
     </data>

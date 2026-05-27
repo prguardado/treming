@@ -43,7 +43,6 @@ class EstateProperty(models.Model):
         ('west', 'Oeste')
     ], string='Orientación del jardín', help='La orientación del jardín puede afectar la cantidad de luz solar que recibe, lo que a su vez puede influir en el crecimiento de las plantas y en la comodidad del espacio al aire libre. Por ejemplo, un jardín orientado al sur generalmente recibe más luz solar durante el día, lo que puede ser ideal para cultivar plantas que requieren mucha luz. Por otro lado, un jardín orientado al norte puede recibir menos luz directa, lo que podría ser más adecuado para plantas que prefieren sombra o para crear un espacio más fresco durante los meses de verano.')
 
-    # Se añaden los nuevos campos al modelo estate_property active y state
     # Definición de campo reservado active
     active = fields.Boolean(string='Activo', default=True, help='Indica si la propiedad está activa o no')
     
@@ -71,7 +70,7 @@ class EstateProperty(models.Model):
     # Luego salesperson debe ser un empleado de Real Estte Agency
     salesperson_id = fields.Many2one('res.users', string='Vendedor', index=True, tracking=True, default=lambda self: self.env.user)
     
-    # Definición de atributo offer_id al modelo estate.property -----------------------------------------------------------------
+    # Definición de atributo offer_ids al modelo estate.property -----------------------------------------------------------------
 
     offer_ids = fields.One2many("estate.property.offer", "property_id", string='Ofertas')
     
@@ -171,6 +170,15 @@ class EstateProperty(models.Model):
                 raise UserError('Una propiedad vendida no puede ser cancelada.')
             record.state == 'canceled'
         return True
+               
+    # Capítulo 12: Ejercicio de herencia Python --------------------------------------------------------------------------------
+    
+    @api.ondelete(at_uninstall=False)    
+    def _unlink_except_new_or_canceled(self):
+        # Self puede contener múltiples registros si el usuario selecciona varios en la lista y presiona "Eliminar"
+        for record in self:
+            if record.state not in ('new', 'canceled'):
+                raise UserError('Sólo se pueden eliminar propiedades que se encuentren en el estado Nuevo o Cancelado.')
     
     # --------------------------------------------------------------------------------------------------------------------------
     

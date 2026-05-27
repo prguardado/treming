@@ -2,6 +2,14 @@
 <odoo>
     <data>
 
+        <!-- Acción para estate_property_offer -->
+        <record id="action_estate_property_offer" model="ir.actions.act_window">
+            <field name="name">Ofertas</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('property_type_id','=',active_id)]</field>
+        </record>
+
         <record id="estate_property_type_view_search" model="ir.ui.view">
             <field name="name">estate.property.type.search</field>
             <field name="model">estate.property.type</field>
@@ -19,10 +27,18 @@
             <field name="name">estate.property.type.form</field>
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
-                <form string="Properties Types">
+                <form string="Tipos de Propiedades">
                     <header>
+
                     </header>
                     <sheet>
+
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(action_estate_property_offer)d" type="action" class="oe_stat_button" icon="fa-money">
+                                <field name="offer_count" widget="statinfo" string="Ofertas"/>
+                            </button>
+                        </div>
+
                         <div class="oe_title">
                             <h1>                                
                                 <field name="name" class="mb16" placeholder="Nuevo tipo de propiedad"/>
@@ -40,6 +56,7 @@
                                 </field>
                             </page>
                         </notebook>
+                        
                     </sheet>
                 </form>
             </field>
@@ -50,10 +67,26 @@
             <field name="name">estate.property.type.list</field>
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
-                <list string="Estate Properties Types">
+                <list string="Tipo de Propiedades">
                     <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name='active'/>
+                </list>
+            </field>
+        </record>
+
+        <!-- 2. List View (Vista de lista para mostrar las ofertas) -->
+        <record id="view_estate_property_offer_list" model="ir.ui.view">
+            <field name="name">estate.property.offer.list</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <list string="Ofertas de Propiedades"
+                        decoration-danger="status == 'refused'"
+                        decoration-success="status == 'accepted'">
+                    <field name="price" width="25%" sum="price"/>
+                    <field name="partner_id" width="25%"/>
+                    <field name="validity" width="25%"/>
+                    <field name="date_deadline" width="25%"/>
                 </list>
             </field>
         </record>

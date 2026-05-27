@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from datetime import timedelta
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     
@@ -31,6 +32,10 @@ class EstatePropertyOffer(models.Model):
     
     # Se añade el campo calculado date_deadline
     date_deadline = fields.Date(string='Fecha de límite', compute='_compute_date_deadline', inverse='_inverse_date_deadline', help='Fecha de vencimiento de la oferta')
+    
+    # Ejercicio final Capítulo 11 parte I: Campo relacionado property_type_id ----------------------------------------------------------------------------------------------
+    # Se utiliza el atributo store=True para que Odoo guarde el dato en la base de datos para contar las ofertas rápidamente después
+    property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id', string='Tipo de propiedad', store=True)
     
     
     # Definición de SQL Constraints --------------------------------------------------------------------------------------------
@@ -88,9 +93,9 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             
-            # Actualizar el estado de la propiedad como Oferta Recibida
-            if record.property_id.state != 'offer_received':
-                record.property_id.state = 'offer_received'
+            # Actualizar el estado de la propiedad como Oferta Aceptada
+            #if record.property_id.state != 'offer_accepted':
+            record.property_id.state = 'offer_accepted'
             
         # Al retornar True..
         return True
@@ -102,3 +107,28 @@ class EstatePropertyOffer(models.Model):
                 raise UserError('Una oferta aceptada no puede ser rechazada.')
             record.status = 'refused'
         return True
+    
+    # Capítulo 12: Ejercicio de herencia python, al crear la oferta, establecer el estado en oferta recibida -------------------------
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # 1. Obtención de ID de la propiedad que el usuario seleccionó en el formulario
+            property_id = vals.get('property_id')
+            precio_nuevo = vals.get('price')
+            # Si property_id es verdadero
+            if property_id:
+                # 2. Instanciamos el objeto de la propiedad usando self.env y browse()
+                propiedad = self.env['estate.property'].browse(property_id)
+                # 3. Validamos que el precio sea mayor que las ofertas existentes
+                if propiedad.offer_ids:
+                    # Se extraen todos los precios de las ofertas actuales y se busca el máximo
+                    oferta_maxima = max(propiedad.offer_ids.mapped('price'))
+                    # Validar si el precio_nuevo es menor que la oferta_maxima
+                    if precio_nuevo < oferta_maxima:
+                        # Se lanza el mensaje de error
+                        raise UserError(f'La oferta debe ser mayor a la oferta actual ({oferta_maxima}).')
+                # 4. Cambio de estado de la oferta actual
+                propiedad.state = 'offer_received'
+        # 5. Finalmente, llamamos al método create original (super) para que ejecue el guardado en la base de datos
+        return super().create(vals_list)
+    

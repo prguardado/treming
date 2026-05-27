@@ -22,6 +22,7 @@
         'views/estate_property_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
+        'views/res_users_views.xml',
         'views/estate_menus_views.xml',        
 
         # Este apartado de data sirve para cargar datos de configuración, como por ejemplo los tipos de actividad del módulo, las etapas de oportunidad, los motivos de pérdida, etc. Estos datos son necesarios para que el módulo funcione correctamente y estén disponibles para los usuarios desde el momento en que se instala el módulo.
