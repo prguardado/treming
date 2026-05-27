@@ -16,8 +16,8 @@
 
         <record id="stage_entrevista" model="crm.stage">
             <field name="name">Entrevista</field>
-            <field name="color">4</field> 
-            <field name="team_ids" eval="[(4, ref('sales_team.team_sales_department'))]"/>
+            <field name="color">7</field> 
+            <field name="team_ids" eval="[(7, ref('sales_team.team_sales_department'))]"/>
         </record>
 
     </data>

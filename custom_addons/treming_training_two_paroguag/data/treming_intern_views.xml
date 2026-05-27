@@ -77,10 +77,10 @@
                 <field name="country_id"/>
                 <separator/>
                 <filter string="Referidos" name="filter_referred" domain="[('referred', '=', True)]"/>
-                <filter string="País: El Salvador" name="filter_el_salvador" domain="[('country_id.name', 'ilike', 'El Salvador')]"/>
-                <!--<group expand="0" string="Agrupar Por">
+                <filter string="País: El Salvador" name="filter_el_salvador" domain="[('country_id.name', '=', 'El Salvador')]"/>
+                <group>
                     <filter string="Universidad / Institución" name="group_by_university" context="{'group_by': 'university_id'}"/>
-                </group>-->
+                </group>
             </search>
         </field>
     </record>
@@ -89,7 +89,7 @@
         <field name="name">Pasantes</field>
         <field name="res_model">treming.intern</field>
         <field name="view_mode">list,form</field>
-        <!--<field name="view_treming_intern_search" ref="view_treming_intern_search"/>-->
+        <field name="search_view_id" ref="view_treming_intern_search"/>
     </record>
 
     <record id="view_treming_intern_activities_list" model="ir.ui.view">
@@ -108,7 +108,7 @@
 
     <record id="action_treming_intern_activities" model="ir.actions.act_window">
         <field name="name">Actividades de Pasante</field>
-        <field name="res_model">treming.intern</field>
+        <field name="res_model">treming.intern.activities</field>
         <field name="view_mode">list</field>
         <field name="view_id" ref="view_treming_intern_activities_list"/>
     </record>

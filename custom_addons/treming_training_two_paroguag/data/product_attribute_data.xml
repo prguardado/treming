@@ -8,16 +8,19 @@
 
         <record id="product_attribute_value_clasico" model="product.attribute.value">
             <field name="name">Clasico</field>
+            <field name="default_extra_price">1.00</field>
             <field name="attribute_id" ref="product_attribute_estilo"/>
         </record>
 
         <record id="product_attribute_value_moderno" model="product.attribute.value">
             <field name="name">Moderno</field>
+            <field name="default_extra_price">2.00</field>
             <field name="attribute_id" ref="product_attribute_estilo"/>
         </record>
 
         <record id="product_attribute_value_alternativo" model="product.attribute.value">
             <field name="name">Alternativo</field>
+            <field name="default_extra_price">3.00</field>
             <field name="attribute_id" ref="product_attribute_estilo"/>
         </record>
 
