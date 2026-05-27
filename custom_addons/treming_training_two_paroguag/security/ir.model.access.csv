@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_treming_intern,treming.intern.access,model_treming_intern,base.group_user,1,1,1,1
+access_treming_intern_activities,treming.intern.activities.access,model_treming_intern_activities,base.group_user,1,1,1,1

@@ -12,7 +12,7 @@
         'contacts',
     ],
     'data':[
-        #'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'data/crm_team_data.xml',
         'data/product_attribute_data.xml',
         'data/res_partner_data.xml',

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="view_treming_intern_list" model="ir.ui.view">
-        <name>treming.intern.list</name>
-        <model>treming.intern</model>
-        <arch type="xml">
-            <list string="Pasantes" import="0" default_oder="birth_date desc" decoration-info="referred == True">
+        <field name="name">treming.intern.list</field>
+        <field name="model">treming.intern</field>
+        <field name="arch" type="xml">
+            <list string="Pasantes" import="0" default_order="birth_date desc" decoration-info="referred == True">
                 <field name="name"/>
                 <field name="birth_date"/>
                 <field name="gender"/>
                 <field name="category_ids" widget="many2many_tags"/>
                 <field name="referred"/>
             </list>
-        </arch>
+        </field>
     </record>
 
     <record id="vew_treming_intern_form" model="ir.ui.view">
-        <name>treming.intern.form</name>
-        <model>treming.intern</model>
-        <arch type="xml">
+        <field name="name">treming.intern.form</field>
+        <field name="model">treming.intern</field>
+        <field name="arch" type="xml">
             <form string="Pasante">
                 <sheet>
                     <div class="oe_title">
@@ -63,47 +63,39 @@
                     </notebook>
                 </sheet>
             </form>
-        </arch>
+        </field>
     </record>
 
     <record id="view_treming_intern_search" model="ir.ui.view">
-        <name>treming.intern.search</name>
-        <model>treming.intern</model>
-        <arch type="xml">
+        <field name="name">treming.intern.search</field>
+        <field name="model">treming.intern</field>
+        <field name="arch" type="xml">
             <search string="Buscar Pasantes">
                 <field name="name"/>
                 <field name="birth_date"/>
-                <field nme="gender"/>
+                <field name="gender"/>
                 <field name="country_id"/>
-                
-                <filter string="Referidos" name="filter_referred" domain="[('referred', '=', true)]"/>
+                <separator/>
+                <filter string="Referidos" name="filter_referred" domain="[('referred', '=', True)]"/>
                 <filter string="País: El Salvador" name="filter_el_salvador" domain="[('country_id.name', 'ilike', 'El Salvador')]"/>
-
-                <group expand="0" string="Agrupar Por">
+                <!--<group expand="0" string="Agrupar Por">
                     <filter string="Universidad / Institución" name="group_by_university" context="{'group_by': 'university_id'}"/>
-                </group>
+                </group>-->
             </search>
-        </arch>
+        </field>
     </record>
 
     <record id="action_treming_intern" model="ir.actions.act_window">
-        <name>Pasantes</name>
-        <res_model>treming.intern</res_model>
-        <view_mode>list,form</view_mode>
-        <search_view_id ref="view_treming_intern_search"/>
-    </record>
-
-    <record id="action_treming_intern_activities" model="ir.actions.act_window">
-        <name>Actividades de Pasante</name>
-        <res_model>treming.intern.activities</res_model>
-        <view_mode>list</view_mode>
-        <search_view_id ref="view_treming_intern_activities_list"/>
+        <field name="name">Pasantes</field>
+        <field name="res_model">treming.intern</field>
+        <field name="view_mode">list,form</field>
+        <!--<field name="view_treming_intern_search" ref="view_treming_intern_search"/>-->
     </record>
 
     <record id="view_treming_intern_activities_list" model="ir.ui.view">
-        <name>treming.intern.activities.list</name>
-        <model>treming.intern.activities</model>
-        <arch type="xml">
+        <field name="name">treming.intern.activities.list</field>
+        <field name="model">treming.intern.activities</field>
+        <field name="arch" type="xml">
             <list string="Actividades" create="0" delete="0" edit="0">
                 <field name="intern_id"/>
                 <field name="date"/>
@@ -111,16 +103,23 @@
                 <field name="difficulty"/>
                 <field name="product_id"/>
             </list>
-        </arch>
+        </field>
     </record>
 
-    <menuitem   id="menu_treming_intern" 
+    <record id="action_treming_intern_activities" model="ir.actions.act_window">
+        <field name="name">Actividades de Pasante</field>
+        <field name="res_model">treming.intern</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_treming_intern_activities_list"/>
+    </record>
+
+    <menuitem   id="menu_treming_intern_root" 
                 name="Pasantes"
                 parent="contacts.menu_contacts"
                 action="action_treming_intern"/>
 
     <menuitem   id="menu_treming_intern_activities" 
-                name="Actividades de Pasantes"
+                name="Actividades de Pasante"
                 parent="contacts.res_partner_menu_config"
                 action="action_treming_intern_activities"
                 sequence="30"/>
