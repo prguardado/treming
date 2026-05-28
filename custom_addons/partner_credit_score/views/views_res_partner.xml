@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <record id="view_partner_form_inherit_credit_score" model="ir.ui.view">
+            <field name="name">view.res.partner.form.inherit.credit.score</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Se inserta el campo credit score justo después del campo website -->
+                <xpath xpr="//field[@name='website']" position="after">
+                    <field name="x_credit_score"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>
+
+<!--
+    De este modo, es exactamente la mecánica de view inheritance: una vista (ir.ui.view) con inherit que referencia a
+    la vista padre con xpath y los atributos xpr para búsqueda del campo de referencia y position para la posición de
+    insersión
+-->
