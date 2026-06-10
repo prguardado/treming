@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_expense_request_root" name="Solicitud de Gasto" sequence="10"/>
+    <menuitem id="menu_expense_request" name="Solicitudes de Gasto" parent="menu_expense_request_root" action="action_expense_request" sequence="10"/>
+</odoo>

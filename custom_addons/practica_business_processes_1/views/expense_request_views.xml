@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Apartado para configuración de búsquedas -->
+     <record id="expense_request_search" model="ir.ui.view">
+        <field name="name">expense.request.search</field>
+        <field name="model">expense.request</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Solicitudes de Gasto">
+                <field name="name"/>
+                <field name="state"/>
+            </search>
+        </field>
+     </record>
+
+    <!-- Vista de Formulario para Solicitudes de Gasto -->
+    <record id="view_expense_request_form" model="ir.ui.view">
+        <field name="name">expense.request.form</field>
+        <field name="model">expense.request</field>
+        <field name="arch" type="xml">
+            <form string="Solicitud de Gasto">
+                <header>
+                    <button name="action_submit" string="Enviar" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Aprobar" type="object" class="oe_highlight" invisible="state != 'submitted'"/>
+                    <button name="action_pay" string="Registrar Pago" type="object" class="oe_highlight" invisible="state != 'approved'"/>
+                    <button name="action_cancel" string="Cancelar" type="object" invisible="state in ('paid', 'cancelled')"/>
+                    <button name="action_draft" string="Volver a Borrador" type="object" invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Descripción de la Solicitud"/>
+                        <h1>
+                            <field name="name" readonly="state != 'draft'" placeholder="Ej. Viaje de negocios... "/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="amount" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de Lista para Solicitudes de Gasto -->
+    <record id="view_expense_request_list" model="ir.ui.view">
+        <field name="name">expense.request.list</field>
+        <field name="model">expense.request</field>
+        <field name="arch" type="xml">
+            <list string="Solicitudes de Gasto"
+                decoration-success="state == 'approved'"
+                decoration-bf="state == 'submitted'"
+                decoration-muted="state == 'paid'"
+                decoration-danger="state == 'cancelled'">
+                <field name="name" width="25%"/>
+                <field name="amount" width="15%"/>
+                <field name="state" width="15%"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Acción para abrir la vista de Soicitudes de Gasto -->
+     <record id="action_expense_request" model="ir.actions.act_window">
+        <field name="name">Solicitudes de Gasto</field>
+        <field name="res_model">expense.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_legend">
+                Create your first Expense Request record!
+            </p>
+        </field>
+     </record>
+
+</odoo>
