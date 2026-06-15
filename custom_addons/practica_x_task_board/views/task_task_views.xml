@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_x_task_board_task_form" model="ir.ui.view">
+        <field name="name">x_task_board.task.form</field>
+        <field name="model">x_task_board.task</field>
+        <field name="arch" type="xml">
+            <form string="Tarea">
+                <header>
+                    <button name="action_start"
+                            type="object"
+                            string="Iniciar"
+                            class="btn-primary"
+                            invisible="state != 'draft'"/>
+
+                    <button name="action_done"
+                            type="object"
+                            string="Completar"
+                            class="btn-primary"
+                            invisible="state not in ['draft', 'open']"/>
+
+                    <button name="action_cancel"
+                            type="object"
+                            string="Cancelar"
+                            invisible="state in ['done', 'cancel']"/>
+
+                    <field name="state"
+                           widget="statusbar"
+                           statusbar_visible="draft,open,done,cancel"/>
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Ej. Preparar propuesta comercial"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Seguimiento">
+                            <field name="stage_id"/>
+                            <field name="user_id"/>
+                            <field name="partner_id"/>
+                            <field name="priority" widget="priority"/>
+                            <field name="kanban_state" widget="state_selection"/>
+                        </group>
+
+                        <group string="Planificación">
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="is_all_day"/>
+                        </group>
+                    </group>
+
+                    <group string="Recurrencia">
+                        <field name="recurrence_enabled"/>
+                        <field name="recurrence_interval" invisible="not recurrence_enabled"/>
+                        <field name="recurrence_unit" invisible="not recurrence_enabled"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Descripción">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <chatter open_attachments="True"/>
+            </form>
+        </field>
+    </record>
+
+    <!-- =========================
+         LIST VIEW
+    ========================== -->
+    <record id="view_x_task_board_task_list" model="ir.ui.view">
+        <field name="name">x_task_board.task.list</field>
+        <field name="model">x_task_board.task</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="stage_id"/>
+                <field name="user_id"/>
+                <field name="partner_id"/>
+                <field name="priority" widget="priority"/>
+                <field name="start_datetime"/>
+                <field name="end_datetime"/>
+                <field name="state"/>
+                <field name="activity_ids" widget="list_activity"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_x_task_board_task_kanban" model="ir.ui.view">
+        <field name="name">x_task_board.task.kanban</field>
+        <field name="model">x_task_board.task</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage_id"
+                    default_order="priority desc, start_datetime asc"
+                    sample="1"
+                    class="o_kanban_small_column">
+
+                <field name="name"/>
+                <field name="stage_id"/>
+                <field name="user_id"/>
+                <field name="partner_id"/>
+                <field name="priority"/>
+                <field name="kanban_state"/>
+                <field name="start_datetime"/>
+                <field name="end_datetime"/>
+                <field name="color"/>
+
+                <progressbar field="kanban_state"
+                             colors="{'normal': 'success', 'blocked': 'danger', 'done': 'info'}"/>
+
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <strong>
+                                    <field name="name"/>
+                                </strong>
+                                <field name="priority" widget="priority"/>
+                            </div>
+
+                            <div class="text-muted mb-2">
+                                <field name="partner_id"/>
+                            </div>
+
+                            <div class="mb-2">
+                                <i class="fa fa-calendar me-1"/>
+                                <field name="start_datetime"/>
+                            </div>
+
+                            <footer class="d-flex justify-content-between align-items-center mt-2">
+                                <div>
+                                    <field name="activity_ids" widget="kanban_activity"/>
+                                </div>
+                                <div>
+                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </footer>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_x_task_board_task_calendar" model="ir.ui.view">
+        <field name="name">x_task_board.task.calendar</field>
+        <field name="model">x_task_board.task</field>
+        <field name="arch" type="xml">
+            <calendar string="Agenda de tareas"
+                      date_start="start_datetime"
+                      date_stop="end_datetime"
+                      color="user_id"
+                      mode="week">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="stage_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_x_task_board_task_search" model="ir.ui.view">
+        <field name="name">x_task_board.task.search</field>
+        <field name="model">x_task_board.task</field>
+        <field name="arch" type="xml">
+            <search string="Buscar tareas">
+                <field name="name"/>
+                <field name="user_id"/>
+                <field name="partner_id"/>
+                <field name="stage_id"/>
+
+                <filter string="Mis tareas" name="my_tasks" domain="[('user_id', '=', uid)]"/>
+                <filter string="Recurrentes" name="recurring" domain="[('recurrence_enabled', '=', True)]"/>
+                <filter string="Abiertas" name="open_tasks" domain="[('state', 'in', ['draft', 'open'])]"/>
+
+                <group expand="0" string="Agrupar por">
+                    <filter string="Etapa" name="group_stage" context="{'group_by': 'stage_id'}"/>
+                    <filter string="Responsable" name="group_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="Inicio" name="group_start" context="{'group_by': 'start_datetime:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_x_task_board_task" model="ir.actions.act_window">
+        <field name="name">Tareas</field>
+        <field name="res_model">x_task_board.task</field>
+        <field name="view_mode">kanban,calendar,list,form,activity</field>
+        <field name="search_view_id" ref="view_x_task_board_task_search"/>
+    </record>
+
+    <menuitem id="menu_x_task_board_root"
+              name="Task Board"
+              sequence="10"/>
+
+    <menuitem id="menu_x_task_board_task"
+              name="Tareas"
+              parent="menu_x_task_board_root"
+              action="action_x_task_board_task"
+              sequence="10"/>
+
+</odoo>

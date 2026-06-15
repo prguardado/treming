@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stage_new" model="x_task_board.stage">
+        <field name="name">Nuevo</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <record id="stage_progress" model="x_task_board.stage">
+        <field name="name">En progreso</field>
+        <field name="sequence">2</field>
+    </record>
+
+    <record id="stage_done" model="x_task_board.stage">
+        <field name="name">Hecho</field>
+        <field name="sequence">3</field>
+        <field name="fold">1</field>
+    </record>
+
+    <record id="stage_cancel" model="x_task_board.stage">
+        <field name="name">Cancelado</field>
+        <field name="sequence">4</field>
+        <field name="fold">1</field>
+    </record>
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_x_task_board_stage_list" model="ir.ui.view">
+        <field name="name">x_task_board.stage.list</field>
+        <field name="model">x_task_board.stage</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="fold"/>
+                <field name="color"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_x_task_board_stage_form" model="ir.ui.view">
+        <field name="name">x_task_board.stage.form</field>
+        <field name="model">x_task_board.stage</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="fold"/>
+                        <field name="color"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

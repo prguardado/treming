@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="x_task_board.TaskSwimlaneKanbanView" t-inherit="web.KanbanView">
+        <xpath expr="//Layout" position="before">
+            <div class="o_x_task_swimlane_header p-2 border-bottom">
+                <strong>Vista Kanban extendida</strong>
+                <div class="text-muted">
+                    Aquí puedes añadir selector de “lane” por responsable, equipo o cliente.
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>
