@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_create,perm_write,perm_unlink
+access_orden_compra_avanzada,access.orden.compra.avanzada,model_orden_compra_avanzada,base.group_user,1,1,1,1
+access_orden_compra_avanzada_line,access.orden.compra.avanzada.line,model_orden_compra_avanzada_line,base.group_user,1,1,1,1

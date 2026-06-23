@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="action_report_orden_compra_avanzada" model="ir.actions.report">
+            <field name="name">Imprimir Orden Avanzada</field>
+            <field name="model">orden.compra.avanzada</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">advanced_orden_compra.report_orden_template_view</field>
+            <field name="report_file">advanced_orden_compra.report_orden_template_view</field>
+            <field name="binding_model_id" ref="model_orden_compra_avanzada"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
